@@ -55,6 +55,18 @@ public enum CallDirection {
     ;
 
     /**
+     * Map containing the {@link com.motionizr.percensio.commons.CallDirection} by its internal code.
+     */
+    public static final Map<Integer, CallDirection> FROM_INTERNAL_CODE = Arrays.stream(CallDirection.values())
+            .collect(Collectors.toMap(CallDirection::getInternalCode, Function.identity()));
+
+    /**
+     * Map containing the {@link com.motionizr.percensio.commons.CallDirection} by its public description.
+     */
+    public static final Map<String, CallDirection> FROM_DESC = Arrays.stream(CallDirection.values())
+            .collect(Collectors.toMap(CallDirection::getDesc, Function.identity()));
+
+    /**
      * The call direction description used by the Twilio API.
      */
     private String desc;
@@ -93,17 +105,6 @@ public enum CallDirection {
         return internalCode;
     }
 
-    /**
-     * Map containing the {@link com.motionizr.percensio.commons.CallDirection} by its internal code.
-     */
-    public static final Map<Integer, CallDirection> FROM_INTERNAL_CODE = Arrays.stream(CallDirection.values())
-            .collect(Collectors.toMap(CallDirection::getInternalCode, Function.identity()));
-
-    /**
-     * Map containing the {@link com.motionizr.percensio.commons.CallDirection} by its public description.
-     */
-    public static final Map<String, CallDirection> FROM_DESC = Arrays.stream(CallDirection.values())
-            .collect(Collectors.toMap(CallDirection::getDesc, Function.identity()));
 
     /**
      * Gets the {@link com.motionizr.percensio.commons.CallDirection} from its internal code.

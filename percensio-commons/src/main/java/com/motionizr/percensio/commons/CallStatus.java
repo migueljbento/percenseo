@@ -90,6 +90,18 @@ public enum CallStatus {
     UNKNOWN         ("unknown", -1);
 
     /**
+     * Map containing the {@link CallStatus call status} instances by its desc.
+     */
+    private static final Map<String, CallStatus> FROM_DESC = Arrays.stream(CallStatus.values())
+            .collect(Collectors.toMap(CallStatus::getDesc, Function.identity()));
+
+    /**
+     * Map containing the {@link CallStatus call status} instances by its internal code.
+     */
+    private static final Map<Integer, CallStatus> FROM_INTERNAL_CODE = Arrays.stream(CallStatus.values())
+            .collect(Collectors.toMap(CallStatus::getInternalCode, Function.identity()));
+
+    /**
      * The status description used by the Twilio API.
      */
     private String desc;
@@ -127,18 +139,6 @@ public enum CallStatus {
     public int getInternalCode() {
         return internalCode;
     }
-
-    /**
-     * Map containing the {@link CallStatus call status} instances by its desc.
-     */
-    private static final Map<String, CallStatus> FROM_DESC = Arrays.stream(CallStatus.values())
-            .collect(Collectors.toMap(CallStatus::getDesc, Function.identity()));
-
-    /**
-     * Map containing the {@link CallStatus call status} instances by its internal code.
-     */
-    private static final Map<Integer, CallStatus> FROM_INTERNAL_CODE = Arrays.stream(CallStatus.values())
-            .collect(Collectors.toMap(CallStatus::getInternalCode, Function.identity()));
 
     /**
      * Gets the {@link CallStatus call status} instance from its public desc.
