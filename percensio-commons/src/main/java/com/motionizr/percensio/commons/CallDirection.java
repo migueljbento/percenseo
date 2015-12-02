@@ -24,7 +24,6 @@
 package com.motionizr.percensio.commons;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -34,7 +33,7 @@ import java.util.stream.Collectors;
 /**
  * Enumerates all the call directions supported by the Twilio API.
  *
- * @author Miguel Bento (miguel.bento@feedzai.com)
+ * @author Miguel Bento (migueljbento@gmail.com)
  * @version 1.0.0
  */
 public enum CallDirection {

@@ -53,7 +53,7 @@ public class SurveyResultHandler extends HttpServlet {
     /**
      * The database connection.
      */
-    DatabaseEngine engine;
+    private DatabaseEngine engine;
 
     /**
      * The logger.

@@ -29,7 +29,6 @@ import com.twilio.sdk.TwilioRestClient;
 import com.twilio.sdk.TwilioRestException;
 import com.twilio.sdk.resource.factory.CallFactory;
 import com.twilio.sdk.resource.instance.Account;
-import com.twilio.sdk.resource.instance.Call;
 import mockit.Deencapsulation;
 import mockit.Expectations;
 import mockit.Mocked;
@@ -39,19 +38,16 @@ import org.junit.Test;
 import java.util.Map;
 
 /**
- * @author Miguel Bento (miguel.bento@feedzai.com)
+ * @author Miguel Bento (migueljbento@gmail.com)
  * @version 1.0.0
  */
 public class DialerTest {
 
-    @Mocked
-    TwilioRestClient client;
+    @Mocked private TwilioRestClient client;
 
-    @Mocked
-    Account account;
+    @Mocked private Account account;
 
-    @Mocked
-    CallFactory factory;
+    @Mocked private CallFactory factory;
 
     /**
      * The survey configuration.
@@ -60,7 +56,7 @@ public class DialerTest {
 
     private String to = "+351321321321";
 
-    Map<String, String> expectedParams;
+    private Map<String, String> expectedParams;
 
     @Before
     public void setUp() throws Exception {
@@ -95,6 +91,7 @@ public class DialerTest {
 
         Dialer dialer = new Dialer(configuration);
         dialer.dial(to);
+
     }
 
     @Test(expected = TwilioRestException.class)

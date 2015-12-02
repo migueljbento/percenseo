@@ -27,7 +27,6 @@ import com.feedzai.commons.sql.abstraction.ddl.DbColumnConstraint;
 import com.feedzai.commons.sql.abstraction.ddl.DbColumnType;
 import com.feedzai.commons.sql.abstraction.ddl.DbEntity;
 
-import static com.feedzai.commons.sql.abstraction.dml.dialect.SqlBuilder.dbColumn;
 import static com.feedzai.commons.sql.abstraction.dml.dialect.SqlBuilder.dbEntity;
 
 /**

@@ -30,7 +30,7 @@ import java.util.Arrays;
 import static org.junit.Assert.*;
 
 /**
- * @author Miguel Bento (miguel.bento@feedzai.com)
+ * @author Miguel Bento (migueljbento@gmail.com)
  * @version 1.0.0
  */
 public class CallStatusTest {

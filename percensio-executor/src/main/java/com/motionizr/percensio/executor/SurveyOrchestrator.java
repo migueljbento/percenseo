@@ -174,12 +174,12 @@ public class SurveyOrchestrator {
      * @param callsAlreadyCompleted The numbers that were already contacted with success.
      * @return                      A stream containing each and every {@link com.motionizr.percensio.commons.CallResult call result}.
      */
-    private Stream<CallResult> queuePhoneCalls(Stream<String> surveyNumbers, List<String> callsAlreadyCompleted) {
-        if (configuration.isPrefixConfigured()) {
-            surveyNumbers = surveyNumbers.map(n -> configuration.getInternationalPrefix() + n);
-        }
+    private Stream<CallResult> queuePhoneCalls(final Stream<String> surveyNumbers, final List<String> callsAlreadyCompleted) {
+        Stream<String> internationalSurveyNumbers = configuration.isPrefixConfigured() ?
+                surveyNumbers.map(n -> configuration.getInternationalPrefix() + n) :
+                surveyNumbers;
 
-        return surveyNumbers.filter(n -> !callsAlreadyCompleted.contains(n))
+        return internationalSurveyNumbers.filter(n -> !callsAlreadyCompleted.contains(n))
                         .map(this::handleDialResult);
     }
 
@@ -191,7 +191,7 @@ public class SurveyOrchestrator {
      * @param number    The number to dial.
      * @return          The {@link CallResult call result}.
      */
-    private CallResult handleDialResult(String number) {
+    private CallResult handleDialResult(final String number) {
         try {
             return CallResult.fromCall(dialer.dial(number));
         } catch (TwilioRestException e) {
