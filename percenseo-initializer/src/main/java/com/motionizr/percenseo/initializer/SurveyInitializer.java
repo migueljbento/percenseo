@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
  * @author Miguel Bento (migueljbento@gmail.com)
  * @version 1.0.0
  */
-public class SurveyInitializer {
+public final class SurveyInitializer {
 
     /**
      * The logger.
