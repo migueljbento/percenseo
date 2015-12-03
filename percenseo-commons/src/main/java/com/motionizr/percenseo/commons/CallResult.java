@@ -242,7 +242,7 @@ public class CallResult {
      */
     public static CallResult fromHttpServletRequest(HttpServletRequest request) {
         CallResult result = new CallResult();
-        result.destination = request.getParameter("To");
+        result.destination = request.getParameter("Caller");
         result.callSID = request.getParameter("CallSid");
 
         try {
