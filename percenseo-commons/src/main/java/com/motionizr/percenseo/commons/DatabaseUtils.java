@@ -27,8 +27,6 @@ import com.feedzai.commons.sql.abstraction.engine.DatabaseEngine;
 import com.feedzai.commons.sql.abstraction.engine.DatabaseEngineException;
 import com.feedzai.commons.sql.abstraction.engine.DatabaseFactory;
 import com.feedzai.commons.sql.abstraction.engine.DatabaseFactoryException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 
@@ -40,12 +38,7 @@ import java.util.Properties;
  * @author Miguel Bento (migueljbento@gmail.com)
  * @version 1.0.0
  */
-public class DatabaseUtils {
-
-    /**
-     * The logger.
-     */
-    private static final Logger logger = LoggerFactory.getLogger(DatabaseUtils.class);
+public final class DatabaseUtils {
 
     /**
      * Empty constructor to prevent instantiation.

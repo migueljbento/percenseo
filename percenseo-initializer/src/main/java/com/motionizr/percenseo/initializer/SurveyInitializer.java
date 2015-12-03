@@ -43,6 +43,11 @@ public class SurveyInitializer {
      */
     private static final Logger logger = LoggerFactory.getLogger(SurveyInitializer.class);
 
+    /**
+     * Empty constructor to avoid accidental initialization.
+     */
+    private SurveyInitializer() {}
+
     public static void main(String[] args) {
 
         SurveyInitializerArguments initializerArgs = new SurveyInitializerArguments();

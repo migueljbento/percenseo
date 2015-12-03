@@ -54,7 +54,7 @@ public class DialerTest {
      */
     private SurveyConfiguration configuration;
 
-    private String to = "+351321321321";
+    private String destination = "+351321321321";
 
     private Map<String, String> expectedParams;
 
@@ -69,7 +69,7 @@ public class DialerTest {
 
         ImmutableMap.Builder expectedParamsBuilder = ImmutableMap.builder();
         expectedParamsBuilder.put("From", configuration.getCallerNumber());
-        expectedParamsBuilder.put("To", to);
+        expectedParamsBuilder.put("To", destination);
         expectedParamsBuilder.put("Url", configuration.getCallHandlerURL());
         expectedParamsBuilder.put("StatusCallback", configuration.getCallResultURL());
         expectedParamsBuilder.put("IfMachine", "Hangup");
@@ -90,7 +90,7 @@ public class DialerTest {
         };
 
         Dialer dialer = new Dialer(configuration);
-        dialer.dial(to);
+        dialer.dial(destination);
 
     }
 
@@ -106,6 +106,6 @@ public class DialerTest {
         };
 
         Dialer dialer = new Dialer(configuration);
-        dialer.dial(to);
+        dialer.dial(destination);
     }
 }
