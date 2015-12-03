@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.motionizr</groupId>
+    <artifactId>percenseo-initializer</artifactId>
+
+    <parent>
+        <artifactId>percenseo</artifactId>
+        <groupId>com.motionizr</groupId>
+        <version>1.0.0</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>jcommander</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.motionizr</groupId>
+            <artifactId>percenseo-executor</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>com.motionizr.percenseo.initializer.SurveyInitializer</mainClass>
+                    <arguments>
+                        <argument>-s</argument>
+                        <argument>YOUR_SID_HERE</argument>
+                        <argument>-a</argument>
+                        <argument>YOUR_AUTH_TOKEN_HERE</argument>
+                        <argument>-p</argument>
+                        <argument>YOUR_TWILIO_NUMBER_HERE</argument>
+                        <argument>-c</argument>
+                        <argument>YOUR_CALL_HANDLER_URL_HERE</argument>
+                        <argument>-r</argument>
+                        <argument>YOUR_CALL_RESULT_URL_HERE</argument>
+                        <argument>-d</argument>
+                        <argument>PATH_TO_DB_FILE</argument>
+                        <argument>-n</argument>
+                        <argument>NUMBERS_CSV_FILE</argument>
+                        <argument>-i</argument>
+                        <argument>PREFIX</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+</project>
