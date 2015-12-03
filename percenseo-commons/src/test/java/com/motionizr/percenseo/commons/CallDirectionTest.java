@@ -23,12 +23,11 @@
  */
 package com.motionizr.percenseo.commons;
 
-import com.motionizr.percenseo.commons.CallDirection;
 import org.junit.Test;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Miguel Bento (migueljbento@gmail.com)

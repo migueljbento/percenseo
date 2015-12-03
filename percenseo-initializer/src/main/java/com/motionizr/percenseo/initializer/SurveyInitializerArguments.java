@@ -51,7 +51,7 @@ public class SurveyInitializerArguments {
      * The help parameter used to print the help menu.
      */
     @Parameter(names = {"-h", "--help"}, help = true, description = "Shows this help menu")
-    public boolean help = false;
+    public boolean help;
 
     /**
      * The URL of the endpoint used to handle the call once it's established.

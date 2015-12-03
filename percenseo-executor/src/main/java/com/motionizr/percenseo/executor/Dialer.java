@@ -49,7 +49,7 @@ public class Dialer {
     /**
      * The logger.
      */
-    private static Logger logger = LoggerFactory.getLogger(Dialer.class);
+    private static final Logger logger = LoggerFactory.getLogger(Dialer.class);
 
     /**
      * The factory used to queue the calls.

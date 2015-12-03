@@ -27,7 +27,7 @@ import com.feedzai.commons.sql.abstraction.engine.DatabaseEngine;
 import com.feedzai.commons.sql.abstraction.engine.DatabaseEngineException;
 import com.feedzai.commons.sql.abstraction.engine.DatabaseFactoryException;
 import com.motionizr.percenseo.commons.CallResult;
-import com.motionizr.percenseo.commons.DatabaseHelper;
+import com.motionizr.percenseo.commons.DatabaseUtils;
 import com.motionizr.percenseo.commons.SurveyEntities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +63,7 @@ public class SurveyResultHandler extends HttpServlet {
     @Override
     public void init() throws ServletException {
         try {
-            engine = DatabaseHelper.initializeDbConnection("YOU_DB_FILE_HERE");
+            engine = DatabaseUtils.initializeDbConnection("YOU_DB_FILE_HERE");
         } catch (DatabaseFactoryException | DatabaseEngineException e) {
             logger.error("Unable to initilize the database connection.", e);
             throw new ServletException("Unable to initialize the database connection. Please correct this error before proceeding.");
@@ -73,7 +73,7 @@ public class SurveyResultHandler extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("Call result request: {}", req.getParameterMap().entrySet().stream()
-                .map(e -> e.getKey() + ":" + Arrays.toString(e.getValue()))
+                .map(entry -> entry.getKey() + ":" + Arrays.toString(entry.getValue()))
                 .collect(Collectors.joining(", ")));
 
         CallResult result = CallResult.fromHttpServletRequest(req);
@@ -86,7 +86,7 @@ public class SurveyResultHandler extends HttpServlet {
     @Override
     public void destroy() {
         logger.info("Destroy called");
-        DatabaseHelper.closeDbConnection(engine);
+        DatabaseUtils.closeDbConnection(engine);
         logger.info("Engine closed");
     }
 
@@ -95,22 +95,27 @@ public class SurveyResultHandler extends HttpServlet {
      *
      * @param result    The {@link CallResult call result} to persist.
      */
-    private synchronized void persistCallResult(CallResult result) {
-        try {
-            engine.beginTransaction();
+    private void persistCallResult(CallResult result) {
 
-            engine.persist(SurveyEntities.CALL_RESULT_TABLE, result.toEntity());
+        /* No need to use nothing too fancy, this won't handle a huge amount of requests per second. */
+        synchronized (this) {
+            try {
+                engine.beginTransaction();
 
-            engine.flush();
-            engine.commit();
-            logger.debug("Call {} persisted.", result.getCallSID());
+                engine.persist(SurveyEntities.CALL_RESULT_TABLE, result.toEntity());
 
-        } catch (DatabaseEngineException e) {
-            logger.error("Unable to store call results for SID: {}.", result.getCallSID(), e);
-        } finally {
-            if (engine.isTransactionActive()) {
-                engine.rollback();
+                engine.flush();
+                engine.commit();
+                logger.debug("Call {} persisted.", result.getCallSID());
+
+            } catch (DatabaseEngineException e) {
+                logger.error("Unable to store call results for SID: {}.", result.getCallSID(), e);
+            } finally {
+                if (engine.isTransactionActive()) {
+                    engine.rollback();
+                }
             }
         }
+
     }
 }

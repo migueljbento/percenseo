@@ -26,6 +26,7 @@ package com.motionizr.percenseo.commons;
 import com.feedzai.commons.sql.abstraction.entry.EntityEntry;
 import com.google.common.base.MoreObjects;
 import com.twilio.sdk.resource.instance.Call;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,17 +61,17 @@ public class CallResult {
     /**
      * Instance used to represent calls that failed.
      */
-    private static final CallResult failedCall;
+    private static final CallResult failedCallResult;
 
     static {
-        failedCall = new CallResult();
-        failedCall.status = CallStatus.FAILED;
+        failedCallResult = new CallResult();
+        failedCallResult.status = CallStatus.FAILED;
     }
 
     /**
      * The phone number dialed.
      */
-    private String to;
+    private String destination;
 
     /**
      * The SID of the call.
@@ -117,8 +118,8 @@ public class CallResult {
      *
      * @return  The phone number dialed.
      */
-    public String getTo() {
-        return to;
+    public String getDestination() {
+        return destination;
     }
 
     /**
@@ -192,7 +193,7 @@ public class CallResult {
     public EntityEntry toEntity() {
         return entry()
                 .set(SurveyEntities.CALL_RESULT_SID, callSID)
-                .set(SurveyEntities.CALL_RESULT_TO, to)
+                .set(SurveyEntities.CALL_RESULT_TO, destination)
                 .set(SurveyEntities.CALL_RESULT_DURATION, callDuration)
                 .set(SurveyEntities.CALL_RESULT_STATUS, status != null ? status.getInternalCode() : CallStatus.UNKNOWN.getInternalCode())
                 .set(SurveyEntities.CALL_RESULT_DATE, callDate != null ? callDate.toInstant(ZoneOffset.UTC).getEpochSecond() : null)  //@TODO: Improve TZ support.
@@ -210,7 +211,7 @@ public class CallResult {
      */
     public static CallResult fromCall(Call call) {
         CallResult result = new CallResult();
-        result.to = call.getTo();
+        result.destination = call.getTo();
         result.callSID = call.getSid();
 
         try {
@@ -241,7 +242,7 @@ public class CallResult {
      */
     public static CallResult fromHttpServletRequest(HttpServletRequest request) {
         CallResult result = new CallResult();
-        result.to = request.getParameter("To");
+        result.destination = request.getParameter("To");
         result.callSID = request.getParameter("CallSid");
 
         try {
@@ -258,7 +259,7 @@ public class CallResult {
         result.digits = request.getParameter("Digits");
 
         String callTs = request.getParameter("Timestamp");
-        if (callTs != null && callTs.trim().length() > 0) {
+        if (StringUtils.isNotBlank(callTs)) {
             result.callDate = LocalDateTime.parse(callTs, formatter);
         }
 
@@ -272,14 +273,14 @@ public class CallResult {
      * @return          A call failure result for the specified number.
      */
     public static CallResult failedCall(String number) {
-        failedCall.to = number;
-        return failedCall;
+        failedCallResult.destination = number;
+        return failedCallResult;
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("to", to)
+                .add("destination", destination)
                 .add("callSID", callSID)
                 .add("callDuration", callDuration)
                 .add("humanAnswered", humanAnswered)

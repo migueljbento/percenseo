@@ -30,9 +30,8 @@ import com.feedzai.commons.sql.abstraction.engine.DatabaseFactoryException;
 import com.motionizr.percenseo.executor.configuration.SurveyConfiguration;
 import com.motionizr.percenseo.commons.CallResult;
 import com.motionizr.percenseo.commons.CallStatus;
-import com.motionizr.percenseo.commons.DatabaseHelper;
+import com.motionizr.percenseo.commons.DatabaseUtils;
 import com.motionizr.percenseo.commons.SurveyEntities;
-import com.motionizr.percenseo.executor.configuration.SurveyConfiguration;
 import com.twilio.sdk.TwilioRestException;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -63,7 +62,7 @@ public class SurveyOrchestrator {
     /**
      * The logger.
      */
-    private static Logger logger = LoggerFactory.getLogger(SurveyOrchestrator.class);
+    private static final Logger logger = LoggerFactory.getLogger(SurveyOrchestrator.class);
 
     /**
      * The {@link com.motionizr.percenseo.executor.configuration.SurveyConfiguration survey configuration}.
@@ -101,7 +100,7 @@ public class SurveyOrchestrator {
         logger.info("Starting the survey.");
 
         try {
-            engine = DatabaseHelper.initializeDbConnection(configuration.getDatabaseFile());
+            engine = DatabaseUtils.initializeDbConnection(configuration.getDatabaseFile());
             logger.debug("Database connection initialized");
 
             final List<String> callsAlreadyCompleted = getCallsAlreadyCompleted();
@@ -119,7 +118,7 @@ public class SurveyOrchestrator {
                     groupedResults.getOrDefault(CallStatus.FAILED, 0L)
             );
 
-            DatabaseHelper.closeDbConnection(engine);
+            DatabaseUtils.closeDbConnection(engine);
             logger.debug("Database connection closed");
 
             logger.info("Survey ended.");
@@ -163,7 +162,7 @@ public class SurveyOrchestrator {
         );
 
         return results.stream()
-                .map(e -> e.get(SurveyEntities.CALL_RESULT_TO).toString())
+                .map(entry -> entry.get(SurveyEntities.CALL_RESULT_TO).toString())
                 .collect(Collectors.toList());
     }
 
@@ -177,10 +176,10 @@ public class SurveyOrchestrator {
      */
     private Stream<CallResult> queuePhoneCalls(final Stream<String> surveyNumbers, final List<String> callsAlreadyCompleted) {
         Stream<String> internationalSurveyNumbers = configuration.isPrefixConfigured() ?
-                surveyNumbers.map(n -> configuration.getInternationalPrefix() + n) :
+                surveyNumbers.map(number -> configuration.getInternationalPrefix() + number) :
                 surveyNumbers;
 
-        return internationalSurveyNumbers.filter(n -> !callsAlreadyCompleted.contains(n))
+        return internationalSurveyNumbers.filter(number -> !callsAlreadyCompleted.contains(number))
                         .map(this::handleDialResult);
     }
 

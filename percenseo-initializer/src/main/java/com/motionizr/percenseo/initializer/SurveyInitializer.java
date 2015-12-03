@@ -26,6 +26,7 @@ package com.motionizr.percenseo.initializer;
 import com.beust.jcommander.JCommander;
 import com.motionizr.percenseo.executor.SurveyOrchestrator;
 import com.motionizr.percenseo.executor.configuration.SurveyBuilder;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,7 +62,7 @@ public class SurveyInitializer {
                 .withDatabaseFile(initializerArgs.databaseFile)
                 .withNumbersCSV(initializerArgs.numbersFile);
 
-        if (initializerArgs.internationalPrefix != null && initializerArgs.internationalPrefix.trim().length() > 0) {
+        if (StringUtils.isNotBlank(initializerArgs.internationalPrefix)) {
             builder.withInternationalPrefix(initializerArgs.internationalPrefix);
         }
 

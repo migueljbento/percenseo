@@ -25,10 +25,6 @@ package com.motionizr.percenseo.commons;
 
 import com.feedzai.commons.sql.abstraction.entry.EntityEntry;
 import com.google.common.collect.ImmutableMap;
-import com.motionizr.percenseo.commons.CallDirection;
-import com.motionizr.percenseo.commons.CallResult;
-import com.motionizr.percenseo.commons.CallStatus;
-import com.motionizr.percenseo.commons.SurveyEntities;
 import com.twilio.sdk.TwilioRestClient;
 import com.twilio.sdk.resource.instance.Call;
 import mockit.Deencapsulation;
@@ -46,7 +42,7 @@ import static org.junit.Assert.assertNull;
  */
 public class CallResultTest {
 
-    private final String to = "+16175551212";
+    private final String destination = "+16175551212";
     private final String sid = "ae851c56d7d6a91b";
     private final int duration = 28;
     private final boolean humanAnswered = true;
@@ -65,7 +61,7 @@ public class CallResultTest {
         assertEquals("Empty direction should not throw an NPE and should default to UNKNOWN", CallDirection.UNKNOWN.getInternalCode(), resultEntity.get(SurveyEntities.CALL_RESULT_DIRECTION));
         assertNull("Empty call date should not throw an NPE", resultEntity.get(SurveyEntities.CALL_RESULT_DATE));
 
-        Deencapsulation.setField(result, "to", to);
+        Deencapsulation.setField(result, "destination", destination);
         Deencapsulation.setField(result, "callSID", sid);
         Deencapsulation.setField(result, "callDuration", duration);
         Deencapsulation.setField(result, "humanAnswered", humanAnswered);
@@ -76,7 +72,7 @@ public class CallResultTest {
 
         resultEntity = result.toEntity();
 
-        assertEquals("To should be correctly set", to, resultEntity.get(SurveyEntities.CALL_RESULT_TO));
+        assertEquals("To should be correctly set", destination, resultEntity.get(SurveyEntities.CALL_RESULT_TO));
         assertEquals("SID should be correctly set", sid, resultEntity.get(SurveyEntities.CALL_RESULT_SID));
         assertEquals("Duration should be correctly set", duration, resultEntity.get(SurveyEntities.CALL_RESULT_DURATION));
         assertEquals("Human answered flag should be correctly set", humanAnswered, resultEntity.get(SurveyEntities.CALL_RESULT_HUMAN_ANSWERED));
@@ -89,7 +85,7 @@ public class CallResultTest {
     @Test
     public void testFromCall() throws Exception {
         ImmutableMap.Builder builder = ImmutableMap.builder();
-        builder.put("to", to);
+        builder.put("to", destination);
         builder.put("sid", sid);
         builder.put("duration", String.valueOf(duration));
         builder.put("answered_by", humanAnswered ? "human" : "machine");
@@ -100,7 +96,7 @@ public class CallResultTest {
         Call call = new Call(new TwilioRestClient("AC34567890123456789012345678901234", "anAuthToken"), builder.build());
         CallResult result = CallResult.fromCall(call);
 
-        assertEquals("To should be correctly set", to, result.getTo());
+        assertEquals("To should be correctly set", destination, result.getDestination());
         assertEquals("SID should be correctly set", sid, result.getCallSID());
         assertEquals("Duration should be correctly set", duration, result.getCallDuration());
         assertEquals("Human answered flag should be correctly set", humanAnswered, result.isHumanAnswered());
@@ -112,9 +108,9 @@ public class CallResultTest {
 
     @Test
     public void testFailedCall() throws Exception {
-        CallResult failedCall = CallResult.failedCall(to);
+        CallResult failedCall = CallResult.failedCall(destination);
 
-        assertEquals("To should be correctly set", to, failedCall.getTo());
+        assertEquals("To should be correctly set", destination, failedCall.getDestination());
         assertEquals("Status should be correctly set", CallStatus.FAILED, failedCall.getStatus());
     }
 }

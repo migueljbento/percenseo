@@ -40,12 +40,17 @@ import java.util.Properties;
  * @author Miguel Bento (migueljbento@gmail.com)
  * @version 1.0.0
  */
-public class DatabaseHelper {
+public class DatabaseUtils {
 
     /**
      * The logger.
      */
-    private static final Logger logger = LoggerFactory.getLogger(DatabaseHelper.class);
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseUtils.class);
+
+    /**
+     * Empty constructor to prevent instantiation.
+     */
+    private DatabaseUtils() {}
 
     /**
      * Initializes the database connection.
@@ -77,10 +82,6 @@ public class DatabaseHelper {
      * @param engine    The database connection to close.
      */
     public static void closeDbConnection(DatabaseEngine engine) {
-        try {
-            engine.close();
-        } catch (Exception e) {
-            logger.error("Unable to close the database connection.", e);
-        }
+        engine.close();
     }
 }

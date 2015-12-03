@@ -24,8 +24,10 @@
 package com.motionizr.percenseo.executor.configuration;
 
 import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @TODO: Fill description
@@ -84,7 +86,7 @@ public class SurveyConfiguration {
     /**
      * Flag indicating if an international prefix should be added to the survey numbers.
      */
-    protected boolean prefixConfigured = false;
+    protected boolean prefixConfigured;
 
     /**
      * The international prefix that should be added to the numbers.
@@ -198,59 +200,51 @@ public class SurveyConfiguration {
     protected void validate() throws IllegalArgumentException {
         if (fileBased) {
             Preconditions.checkArgument(
-                    numbersCSV != null &&
-                    numbersCSV.trim().length() > 0 &&
-                    numbersCSV.toLowerCase().endsWith(".csv"),
+                    StringUtils.isNotBlank(numbersCSV) &&
+                    numbersCSV.toLowerCase(Locale.ENGLISH).endsWith(".csv"),
                     String.format("Invalid CSV file: %s", numbersCSV)
             );
         } else {
             Preconditions.checkArgument(
                     numbers != null &&
-                    numbers.size() > 0,
+                    !numbers.isEmpty(),
                     "Invalid or empty numbers list."
             );
         }
 
         Preconditions.checkArgument(
-                databaseFile != null &&
-                databaseFile.trim().length() > 0,
+                StringUtils.isNotBlank(databaseFile),
                 "Invalid H2 database file"
         );
 
         Preconditions.checkArgument(
-                callHandlerURL != null &&
-                callHandlerURL.trim().length() > 0,
+                StringUtils.isNotBlank(callHandlerURL),
                 String.format("Invalid call handler URL: %s", callHandlerURL)
         );
 
         Preconditions.checkArgument(
-                callResultURL != null &&
-                callResultURL.trim().length() > 0,
+                StringUtils.isNotBlank(callResultURL),
                 String.format("Invalid call result URL: %s", callResultURL)
         );
 
         Preconditions.checkArgument(
-                accountSID != null &&
-                accountSID.trim().length() > 0,
+                StringUtils.isNotBlank(accountSID),
                 String.format("Invalid Twilio account SID: %s", accountSID)
         );
 
         Preconditions.checkArgument(
-                authToken != null &&
-                authToken.trim().length() > 0,
+                StringUtils.isNotBlank(authToken),
                 String.format("Invalid auth token: %s", authToken)
         );
 
         Preconditions.checkArgument(
-                callerNumber != null &&
-                callerNumber.trim().length() > 0,
+                StringUtils.isNotBlank(callerNumber),
                 String.format("Invalid Twilio caller number: %s", callerNumber)
         );
 
         if (prefixConfigured) {
             Preconditions.checkArgument(
-                    internationalPrefix != null &&
-                    internationalPrefix.trim().length() > 0,
+                    StringUtils.isNotBlank(internationalPrefix),
                     String.format("Invalid international prefix: %s", internationalPrefix)
             );
         }

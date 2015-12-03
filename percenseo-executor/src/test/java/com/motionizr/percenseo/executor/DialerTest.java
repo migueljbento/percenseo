@@ -25,7 +25,6 @@ package com.motionizr.percenseo.executor;
 
 import com.google.common.collect.ImmutableMap;
 import com.motionizr.percenseo.executor.configuration.SurveyConfiguration;
-import com.motionizr.percenseo.executor.configuration.SurveyConfiguration;
 import com.twilio.sdk.TwilioRestClient;
 import com.twilio.sdk.TwilioRestException;
 import com.twilio.sdk.resource.factory.CallFactory;
